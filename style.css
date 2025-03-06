@@ -20,7 +20,7 @@ body {
   overflow: hidden;
 }
 
-/* Container principal com fundo semi-transparente */
+/* Container principal */
 .game-container {
   background: rgba(255, 255, 255, 0.1);
   padding: 20px;
@@ -28,8 +28,8 @@ body {
   text-align: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   max-width: 100%;
-  width: 90vw; /* Ajusta a largura do container para 90% da largura da tela */
-  max-width: 400px; /* Limita a largura máxima do container */
+  width: 95vw; /* Ajusta a largura para preencher 95% da tela */
+  max-width: 400px; /* largura máxima  */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -53,7 +53,7 @@ canvas {
   margin: 0 auto 20px auto;
   max-width: 100%;
   height: auto;
-  aspect-ratio: 1; /* Isso faz com que o canvas mantenha uma proporção de 1:1 */
+  aspect-ratio: 1; 
 }
 
 /* Estilo da pontuação */
@@ -63,7 +63,7 @@ canvas {
   font-size: 14px;
 }
 
-/* Estilo do botão de reinício */
+/* Estilo do botão de reiniciar */
 #restart-button {
   padding: 10px 20px;
   font-size: 14px;
@@ -80,30 +80,29 @@ canvas {
   background-color: #91327c;
 }
 
-/* Ajustes para tornar o layout mais responsivo em telas menores */
+/*RESPONSIVIDADE*/
 @media (max-width: 600px) {
   .game-container {
-    width: 90vw; /* Ajuste para telas menores */
-    padding: 10px; /* Menos espaço nas bordas */
+    width: 90vw; 
+    padding: 10px; /
   }
 
   .game-container h1 {
-    font-size: 20px; /* Reduz o tamanho do título */
+    font-size: 20px;
   }
 
   .score {
-    font-size: 12px; /* Tamanho menor da pontuação em telas pequenas */
+    font-size: 12px; 
   }
 
   #restart-button {
-    font-size: 12px; /* Ajuste o tamanho do botão */
-    padding: 8px 15px; /* Menos espaçamento para o botão */
+    font-size: 12px; 
+    padding: 8px 15px; 
   }
 
   canvas {
-    width: 100%; /* O canvas ocupa toda a largura disponível */
-    max-width: 100%; /* Não ultrapassa a largura da tela */
+    width: 100%; 
+    max-width: 100%; 
     height: auto;
   }
 }
-
