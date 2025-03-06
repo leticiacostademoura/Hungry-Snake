@@ -128,26 +128,35 @@ function draw() {
   // Cria a cópia da posição inicial da cabeça da cobra
   let head = { ...snake[0] };
 
+
   //Instruções para o controle da direção da cobra - imagina o plano cartesiano, a esquerda e pra baixo é negativo
   if (direction === 'LEFT') head.x -= box;
   if (direction === 'UP') head.y -= box;
   if (direction === 'RIGHT') head.x += box;
   if (direction === 'DOWN') head.y += box;
 
-  // Verifica se a cobra comeu a comida - se a cabeça e a comida estiverem na mesma posição, a cobra vai crescer 
-  if (head.x === food.x && head.y === food.y) {
-    score++; // Aumenta a pontuação
-    scoreElement.textContent = score; // Atualiza a pontuação no HTML
+// Verifica se a cobra comeu a comida - se a cabeça e a comida estiverem na mesma posição, a cobra vai crescer 
+if (head.x === food.x && head.y === food.y) {
+  score++; // Aumenta a pontuação
+  scoreElement.textContent = score; // Atualiza a pontuação no HTML
 
-    // Gera uma nova comida em uma posição aleatória
-    food = {
-      x: Math.floor(Math.random() * 19 + 1) * box,
-      y: Math.floor(Math.random() * 19 + 1) * box,
-    };
-  } else {
-    // Se não comeu a comida, remove a última parte da cobra
-    snake.pop();
+  // Gera uma nova comida em uma posição aleatória
+  food = {
+    x: Math.floor(Math.random() * 19 + 1) * box,
+    y: Math.floor(Math.random() * 19 + 1) * box,
+  };
+
+  const winScore = 30;
+
+  // Verifica se a pontuação atingiu o valor de vitória
+  if (score >= winScore) {
+    clearInterval(game); // Para o jogo
+    alert('Você venceu! Sua pontuação: ' + score); // Exibe a mensagem de vitória
   }
+} else {
+  // Remove a última parte da cobra se não comeu a comida
+  snake.pop();
+}
 
   // Adiciona a nova posição da cabeça da cobra no início do array, fazendo a cobra avançar para a nova posição
   snake.unshift(head);
@@ -182,6 +191,8 @@ function restartGame() {
 
 // Inicia o jogo
 let game;
+
+
 if (confirm("Você está pronto para iniciar o jogo?")) {
   game = setInterval(draw, 100);
 
@@ -195,10 +206,14 @@ if (confirm("Você está pronto para iniciar o jogo?")) {
     }
   });
 
+
   // Adiciona os eventos de teclado para controlar a direção
   document.addEventListener('keydown', directionControl);
 
   // Adiciona os eventos de toque para controlar a direção
   document.addEventListener('touchstart', handleTouchStart);
   document.addEventListener('touchmove', handleTouchMove);
+
+
+
 }
