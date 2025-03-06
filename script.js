@@ -1,52 +1,30 @@
-// Seleciona o canvas html e obtém o contexto 2D para desenhar
+// Seleciona o canvas HTML e obtém o contexto 2D para desenhar
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
 
-// Define o tamanho de cada bloco para o deslocamento da cobra e comida (como se fosse uma espécie de tabela, aqui é a definiçao de cada quadradinho) 
+// Define o tamanho de cada bloco para o deslocamento da cobra e comida
 const box = 20;
 
-// Inicia a cobra com uma única posição, sempre no centro
-//O let é colocado porque esses valores vao mudando conforme a cobra for se mexendo
-//Ele recebe um array de objetos que representam pontos (coordenadas) em um sistema cartesiano 
-let snake = [ 
-  { x: 9 * box, y: 10 * box }, // isso serve para centralizar a cobra, visto que o box é igual a 20, sendo 9*20 = 180 - a cabeça começará a 180 pixels da borda esquerda do canvas
-];
+// Inicia a cobra com uma posição inicial no centro
+let snake = [{ x: 9 * box, y: 10 * box }];
 
-// Define a direção inicial da cobra - para onde ela começará virando
+// Define a direção inicial da cobra
 let direction = 'RIGHT';
 
-// Gera a comida inicial em uma posição aleatória no quadrado
-//Math.floor = arredonda um número decimal para baixo 
-//Math.random gera um numero aleatório
-//A multiplicação por 19 + 1 é usada para garantir que a posição da comida esteja sempre dentro do grid do jogo e não toque as bordas.
+// Gera a comida em uma posição aleatória
 let food = {
   x: Math.floor(Math.random() * 19 + 1) * box,
   y: Math.floor(Math.random() * 19 + 1) * box,
 };
 
-// Inicializa a pontuação em 0
 let score = 0;
-
-// Puxa o elemento de pontuação do HTML 
 const scoreElement = document.getElementById('score');
-
-// Puxa o botão de reiniciar do HTML
 const restartButton = document.getElementById('restart-button');
 
-// Adiciona um evento para identificar as teclas pressionadas - 
-document.addEventListener('keydown', directionControl);
+// Variáveis para controlar os toques na tela
+let lastTouch = { x: 0, y: 0 }; // Armazena a posição do último toque
 
-
-
-  // Adiciona os eventos de toque para controlar a direção
-document.addEventListener('touchstart', handleTouchStart);
-document.addEventListener('touchmove', handleTouchMove);
-
-
-
-
-
-// Função para controlar a direção da cobra com base nas teclas
+// Função para controlar a direção da cobra com as teclas
 function directionControl(event) {
   const key = event.keyCode;
   //aqui, basicamente, ajuda na orientação do vetor (cobra), pois se apertarmos a nossa tecla direita, para o vetor, será a esquerda. Esse processo é feito dentro dessa função
@@ -60,11 +38,6 @@ function directionControl(event) {
     direction = 'DOWN';
   }
 }
-
-
-
-
-
 
 // Função para controlar a direção da cobra com gestos de toque
 function handleTouchStart(event) {
@@ -99,13 +72,6 @@ function handleTouchMove(event) {
   lastTouch.y = touch.clientY;
 }
 
-
-
-
-
-
-
-
 // Função que vai verificar colisões da cabeça com o corpo
 function collision(head, array) {
   // Inicia a verificação a partir do índice 1 para ignorar a cabeça
@@ -118,7 +84,7 @@ function collision(head, array) {
   return false;
 }
 
-// Função que desenha e atualiza o jogo (
+// Função que desenha e atualiza o jogo
 function draw() {
   // Limpa o canvas a cada quadro
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -152,7 +118,7 @@ function draw() {
   ctx.arc(food.x + box / 2, food.y + box / 2, box / 2, 0, Math.PI * 2); 
   ctx.fill(); 
 
-  // Cria uma cópia da posição inicial da cabeça da cobra
+  // Cria a cópia da posição inicial da cabeça da cobra
   let head = { ...snake[0] };
 
   //Instruções para o controle da direção da cobra - imagina o plano cartesiano, a esquerda e pra baixo é negativo
@@ -172,11 +138,11 @@ function draw() {
       y: Math.floor(Math.random() * 19 + 1) * box,
     };
   } else {
-    // Remove a última parte da cobra se não comeu a comida
+    // Se não comeu a comida, remove a última parte da cobra
     snake.pop();
   }
 
-  // Add a nova posição da cabeça da cobra no início do array, fazendo a cobra avançar para a nova posição
+  // Adiciona a nova posição da cabeça da cobra no início do array, fazendo a cobra avançar para a nova posição
   snake.unshift(head);
 
   // Verifica colisões com as paredes ou consigo mesma
@@ -187,42 +153,38 @@ function draw() {
     head.y >= canvas.height ||
     collision(head, snake)
   ) {
-    clearInterval(game); // Para o jogo caso a colisão aconteça
+    clearInterval(game); // Para o jogo em caso de colisão
     alert('Game Over! Sua pontuação: ' + score); // Alerta para o jogador que perdeu o jogo + sua pontuação
   }
 }
 
+// Função para reiniciar o jogo
+function restartGame() {
+  snake = [{ x: 9 * box, y: 10 * box }];
+  direction = 'RIGHT';
+  food = {
+    x: Math.floor(Math.random() * 19 + 1) * box,
+    y: Math.floor(Math.random() * 19 + 1) * box,
+  };
+  score = 0;
+  scoreElement.textContent = score;
+
+  clearInterval(game);
+  game = setInterval(draw, 100);
+}
+
+// Inicia o jogo
 let game;
-
-//Mensagem prévia antes do início do jogo
 if (confirm("Você está pronto para iniciar o jogo?")) {
-  // Inicia o jogo com um intervalo de 100ms para atualizar a tela
-  game = setInterval(draw, 100); 
+  game = setInterval(draw, 100);
 
-  // Função para reiniciar o jogo
-  function restartGame() {
-    // Reinicia as variáveis do jogo
-    snake = [{ x: 9 * box, y: 10 * box }];
-    direction = 'RIGHT';
-    food = {
-      x: Math.floor(Math.random() * 19 + 1) * box,
-      y: Math.floor(Math.random() * 19 + 1) * box,
-    };
-    score = 0;
-    scoreElement.textContent = score;
-
-    // Reinicia o intervalo do jogo
-    clearInterval(game);
-    game = setInterval(draw, 100);
-  }
-
-  // Adiciona um evento para o botão de reiniciar com um click
+  // Adiciona um evento para reiniciar o jogo com o botão de reinício
   restartButton.addEventListener('click', restartGame);
 
-  // Adiciona um evento para reiniciar o jogo com o pressionamento da tecla Enter
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-      restartGame(); // Reinicia o jogo quando a tecla Enter for pressionada
-    }
-  });
+  // Adiciona os eventos de teclado para controlar a direção
+  document.addEventListener('keydown', directionControl);
+
+  // Adiciona os eventos de toque para controlar a direção
+  document.addEventListener('touchstart', handleTouchStart);
+  document.addEventListener('touchmove', handleTouchMove);
 }
