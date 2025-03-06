@@ -17,7 +17,7 @@ body {
   align-items: center;
   font-family: 'Press Start 2P', cursive;
   padding: 10px;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 /* Container principal com fundo semi-transparente */
@@ -27,12 +27,14 @@ body {
   border-radius: 15px;
   text-align: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  max-width: 100%; 
-  width: 400px; 
+  max-width: 100%;
+  width: 90vw; /* Ajusta a largura do container para 90% da largura da tela */
+  max-width: 400px; /* Limita a largura máxima do container */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
+  height: auto;
 }
 
 /* Estilo do título do jogo */
@@ -49,8 +51,9 @@ canvas {
   border-radius: 10px;
   display: block;
   margin: 0 auto 20px auto;
-  max-width: 100%;  
+  max-width: 100%;
   height: auto;
+  aspect-ratio: 1; /* Isso faz com que o canvas mantenha uma proporção de 1:1 */
 }
 
 /* Estilo da pontuação */
@@ -75,5 +78,32 @@ canvas {
 
 #restart-button:hover {
   background-color: #91327c;
+}
+
+/* Ajustes para tornar o layout mais responsivo em telas menores */
+@media (max-width: 600px) {
+  .game-container {
+    width: 90vw; /* Ajuste para telas menores */
+    padding: 10px; /* Menos espaço nas bordas */
+  }
+
+  .game-container h1 {
+    font-size: 20px; /* Reduz o tamanho do título */
+  }
+
+  .score {
+    font-size: 12px; /* Tamanho menor da pontuação em telas pequenas */
+  }
+
+  #restart-button {
+    font-size: 12px; /* Ajuste o tamanho do botão */
+    padding: 8px 15px; /* Menos espaçamento para o botão */
+  }
+
+  canvas {
+    width: 100%; /* O canvas ocupa toda a largura disponível */
+    max-width: 100%; /* Não ultrapassa a largura da tela */
+    height: auto;
+  }
 }
 
