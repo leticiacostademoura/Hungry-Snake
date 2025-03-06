@@ -188,6 +188,13 @@ if (confirm("Você está pronto para iniciar o jogo?")) {
   // Adiciona um evento para reiniciar o jogo com o botão de reinício
   restartButton.addEventListener('click', restartGame);
 
+  // Adiciona um evento para reiniciar o jogo com o pressionamento da tecla Enter
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      restartGame(); 
+    }
+  });
+
   // Adiciona os eventos de teclado para controlar a direção
   document.addEventListener('keydown', directionControl);
 
