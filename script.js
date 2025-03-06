@@ -2,26 +2,33 @@
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
 
-// Define o tamanho de cada bloco para o deslocamento da cobra e comida
+// Define o tamanho de cada bloco para o deslocamento da cobra e comida ((como se fosse uma espécie de tabela, aqui é a definiçao de cada quadradinho) 
 const box = 20;
 
 // Inicia a cobra com uma posição inicial no centro
-let snake = [{ x: 9 * box, y: 10 * box }];
+//O let é colocado porque esses valores vao mudando conforme a cobra for se mexendo
+//A cobra foi feita pelo método de pontos - recebe um array de objetos que representam pontos (coordenadas) em um sistema cartesiano 
+let snake = [{ x: 9 * box, y: 10 * box }]; //// isso serve para centralizar a cobra, visto que o box é igual a 20, sendo 9*20 = 180 - a cabeça começará a 180 pixels da borda esquerda do canvas
 
 // Define a direção inicial da cobra
 let direction = 'RIGHT';
 
 // Gera a comida em uma posição aleatória
+//Math.floor = arredonda um número decimal para baixo 
+//Math.random gera um numero aleatório
+//A multiplicação por 19 + 1 é usada para garantir que a posição da comida esteja sempre dentro do grid do jogo e não toque as bordas.
 let food = {
   x: Math.floor(Math.random() * 19 + 1) * box,
   y: Math.floor(Math.random() * 19 + 1) * box,
 };
 
+
+//inicia a pontuação em 0
 let score = 0;
 const scoreElement = document.getElementById('score');
 const restartButton = document.getElementById('restart-button');
 
-// Variáveis para controlar os toques na tela
+// Controle dos toques na tela
 let lastTouch = { x: 0, y: 0 }; // Armazena a posição do último toque
 
 // Função para controlar a direção da cobra com as teclas
@@ -47,13 +54,13 @@ function handleTouchStart(event) {
 }
 
 function handleTouchMove(event) {
-  if (event.touches.length > 1) return; // Ignora se houver mais de um toque (evita zoom, por exemplo)
+  if (event.touches.length > 1) return; // Ignora se houver mais de um toque
 
   const touch = event.touches[0];
   const diffX = touch.clientX - lastTouch.x;
   const diffY = touch.clientY - lastTouch.y;
 
-  // Detecta se o movimento foi mais horizontal ou vertical e altera a direção da cobra
+  // Verifica a direção do movimento e determina a orientação da cobra
   if (Math.abs(diffX) > Math.abs(diffY)) {
     if (diffX > 0 && direction !== 'LEFT') {
       direction = 'RIGHT';
